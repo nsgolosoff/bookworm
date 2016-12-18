@@ -13,7 +13,7 @@ namespace bookworm.Helpers
     {
         public static void LoadDataFromCSV(string filePath)
         {
-            using (var db = new BookWormContext())
+            using (var db = new BookWormContext2())
             {
                 using (var reader = new StreamReader(filePath))
                 {
@@ -56,7 +56,7 @@ namespace bookworm.Helpers
         public static List<Book> GetBooks(Func<Book, bool> condition = null)
         {
 
-            using (var db = new BookWormContext())
+            using (var db = new BookWormContext2())
             {
                 if (condition == null)
                     return db.Books.ToList();
@@ -67,7 +67,7 @@ namespace bookworm.Helpers
 
         public static int RegisterOrder(Book book, string name, string phone, string address)
         {
-            using (var db = new BookWormContext())
+            using (var db = new BookWormContext2())
             {
                 var client = db.Clients.FirstOrDefault((c) => c.Phone.Equals(phone));
                 if (client == null)

@@ -8,9 +8,9 @@ using bookworm.Entities;
 
 namespace bookworm.Helpers
 {
-    public class BookWormContext : DbContext
+    public class BookWormContext2 : DbContext
     {
-        public BookWormContext() : base("BookWorm") { }
+        public BookWormContext2() : base("BookWorm1") { }
         public DbSet<Book> Books { get; set; }
         public DbSet<Client> Clients { get; set; }
         public DbSet<Order> Orders { get; set; }
