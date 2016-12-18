@@ -36,30 +36,59 @@ namespace bookworm
 
         private void menuItem_books_loadFromCSV_Click(object sender, RoutedEventArgs e)
         {
-         //   _guiHelper.OpenFildeDialogAndUploadData();
+            _guiHelper.OpenFildeDialogAndUploadData();
         }
 
         private void window_main_Loaded(object sender, RoutedEventArgs e)
         {
-           // _guiHelper.LoadBooksData();
+            _guiHelper.LoadBooksData();
         }
 
         string _searchText = string.Empty;
 
         private void textBox_search_TextChanged(object sender, TextChangedEventArgs e)
         {
-            
+            TextBox t = sender as TextBox;
+            _searchText = t.Text.ToString();
+            dataGrid_main.Items.Filter = FilterData;
+            dataGrid_main.Items.Refresh();
         }
 
         private bool FilterData(object item)
         {
-            return true;
+            var value = (Book)item;
+            if (value == null || value.Id < 0)
+                return false;
+            return value.Title.ToLower().Contains(_searchText.ToLower())
+                || value.ISBN.ToLower().Contains(_searchText.ToLower())
+                || value.Autor.ToLower().ToString().Contains(_searchText.ToLower())
+                || string.Format("{0} {1} {2}", value.Autor, value.Title, value.ISBN).ToLower().Contains(_searchText.ToLower());
         }
 
         private async void button_book_Click(object sender, RoutedEventArgs e)
         {
-            
-           
+            try
+            {
+                var select = (Book)dataGrid_main.SelectedItem;
+                if (select == null)
+                {
+                    throw new Exception("Select a book.");
+                }
+                if (select.Count < 1)
+                {
+                    throw new Exception("The item is out of stock.");
+                }
+                var newOrderWindow = new NewOrderWindow();
+                newOrderWindow.ShowDialog();
+                if (newOrderWindow.IsSuccess)
+                {
+                    _guiHelper.RegisterOrder(select, newOrderWindow.ClientName, newOrderWindow.Phone, newOrderWindow.Address);
+                }
+            }
+            catch (Exception error)
+            {
+                await this.ShowMessageAsync("Error", error.Message);
+            }
         }
 
 
