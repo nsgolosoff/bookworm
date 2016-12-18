@@ -27,6 +27,41 @@ namespace bookworm
         public MainWindow()
         {
             InitializeComponent();
+            _guiHelper = GuiHelper.GetGuiHelper();
+            _guiHelper.ProgressBar = progreesbar_main;
+            _guiHelper.DataGrid = dataGrid_main;
         }
+
+        private GuiHelper _guiHelper;
+
+        private void menuItem_books_loadFromCSV_Click(object sender, RoutedEventArgs e)
+        {
+         //   _guiHelper.OpenFildeDialogAndUploadData();
+        }
+
+        private void window_main_Loaded(object sender, RoutedEventArgs e)
+        {
+           // _guiHelper.LoadBooksData();
+        }
+
+        string _searchText = string.Empty;
+
+        private void textBox_search_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            
+        }
+
+        private bool FilterData(object item)
+        {
+            return true;
+        }
+
+        private async void button_book_Click(object sender, RoutedEventArgs e)
+        {
+            
+           
+        }
+
+
     }
 }
