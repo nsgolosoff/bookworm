@@ -63,5 +63,30 @@ namespace bookworm.Helpers
                 return db.Books.Where(condition).ToList();
             }
         }
+
+
+        public static int RegisterOrder(Book book, string name, string phone, string address)
+        {
+            using (var db = new BookWormContext())
+            {
+                var client = db.Clients.FirstOrDefault((c) => c.Phone.Equals(phone));
+                if (client == null)
+                {
+                    client = new Client { Name = name, Phone = phone, Address = address };
+                    db.Clients.Add(client);
+                }
+                var dbBook = db.Books.FirstOrDefault((b) => b.Id == book.Id) ?? book;
+                dbBook.Count--;
+                var order = new Order()
+                {
+                    Book = dbBook,
+                    Client = client
+                };
+                db.Orders.Add(order);
+                db.SaveChanges();
+                return order.Id;
+            }
+        }
+
     }
 }

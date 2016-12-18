@@ -14,11 +14,16 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Windows;
 using bookworm.Entities;
+using System.Net.Mail;
 
 namespace bookworm.Helpers
 {
   public  class GuiHelper
     {
+        private const string YANDEX_USERNAME = "otecisyn2014"; //for sending email from address username@yandex.ru
+        private const string YANDEX_PASSWORD = "19980217";
+        private readonly string _email = "nik-golosov@yandex.ru";
+
         private static GuiHelper guiHelper;
         public static GuiHelper GetGuiHelper()
         {
@@ -103,6 +108,38 @@ namespace bookworm.Helpers
             }
         }
 
+        public async void RegisterOrder(Book book, string name, string phone, string address)
+        {
+            var processName = DateTime.Today.ToBinary().ToString();
+            SafeStatusChange(processName, true);
+            var task = Task.Factory.StartNew(() => DataBaseHelper.RegisterOrder(book, name, phone, address));
+            await task;
+            SafeStatusChange(processName, false);
 
+            SmtpClient emailClient = new SmtpClient
+            {
+                Port = 587,
+                Host = "smtp.yandex.ru",
+                EnableSsl = true,
+                Timeout = 20000, //20 seconds
+                DeliveryMethod = SmtpDeliveryMethod.Network,
+                UseDefaultCredentials = false,
+                Credentials = new System.Net.NetworkCredential(YANDEX_USERNAME, YANDEX_PASSWORD)
+            };
+
+            string messageText = $"A new order occured. {Environment.NewLine + Environment.NewLine} Book ID:{book.Id} {Environment.NewLine} Book Author:{book.Autor} {Environment.NewLine} Name: {name} {Environment.NewLine} Phone: {phone} {Environment.NewLine} Address: {address}";
+
+            emailClient.Send(new MailMessage($"{YANDEX_USERNAME}@yandex.ru", _email, "New order", messageText)
+            {
+                BodyEncoding = Encoding.UTF8,
+                DeliveryNotificationOptions = DeliveryNotificationOptions.OnFailure
+            });
+
+
+
+            MessageBox.Show(string.Format("Order number is {0}", task.Result));
+
+            LoadBooksData();
+        }
     }
 }
