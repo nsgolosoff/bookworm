@@ -82,6 +82,7 @@
     <Compile Include="Entities\Client.cs" />
     <Compile Include="Entities\Order.cs" />
     <Compile Include="Helpers\BookWormContext.cs" />
+    <Compile Include="Helpers\DataBaseHelper.cs" />
     <Compile Include="Helpers\GuiHelper.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
