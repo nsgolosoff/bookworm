@@ -75,6 +75,7 @@
     <Compile Include="Entities\Book.cs" />
     <Compile Include="Entities\Client.cs" />
     <Compile Include="Entities\Order.cs" />
+    <Compile Include="Helpers\BookWormContext.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
