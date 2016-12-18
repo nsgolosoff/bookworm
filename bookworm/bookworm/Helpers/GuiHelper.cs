@@ -20,7 +20,7 @@ namespace bookworm.Helpers
 {
   public  class GuiHelper
     {
-        private const string YANDEX_USERNAME = "otecisyn2014"; //for sending email from address username@yandex.ru
+        private const string YANDEX_USERNAME = "otecisyn2014"; 
         private const string YANDEX_PASSWORD = "19980217";
         private readonly string _email = "nik-golosov@yandex.ru";
 
